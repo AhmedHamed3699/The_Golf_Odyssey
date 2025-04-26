@@ -155,14 +155,16 @@ class Menustate: public our::State {
         // Notice that I don't clear the screen first, since I assume that the menu rectangle will draw over the whole
         // window anyway.
         menuMaterial->setup();
-        menuMaterial->shader->set("transform", VP*M);
+        menuMaterial->shader->set("M_transform", M);
+        menuMaterial->shader->set("VP_transform", VP);
         rectangle->draw();
 
         // For every button, check if the mouse is inside it. If the mouse is inside, we draw the highlight rectangle over it.
         for(auto& button: buttons){
             if(button.isInside(mousePosition)){
                 highlightMaterial->setup();
-                highlightMaterial->shader->set("transform", VP*button.getLocalToWorld());
+                highlightMaterial->shader->set("M_transform", button.getLocalToWorld());
+                highlightMaterial->shader->set("VP_transform", VP);
                 rectangle->draw();
             }
         }

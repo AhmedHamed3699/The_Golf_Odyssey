@@ -2,12 +2,15 @@
 
 #include "../ecs/world.hpp"
 #include "../components/camera.hpp"
+#include "../components/light.hpp"
 #include "../components/mesh-renderer.hpp"
 #include "../asset-loader.hpp"
 
 #include <glad/gl.h>
 #include <vector>
 #include <algorithm>
+
+#define MAX_LIGHT_COUNT 16
 
 namespace our
 {
@@ -20,6 +23,11 @@ namespace our
         glm::vec3 center;
         Mesh* mesh;
         Material* material;
+    };
+
+    struct SkyLight {
+        glm::vec3 top_color, middle_color, bottom_color;
+        bool enabled;
     };
 
     // A forward renderer is a renderer that draw the object final color directly to the framebuffer
@@ -36,10 +44,16 @@ namespace our
         // Objects used for rendering a skybox
         Mesh* skySphere;
         TexturedMaterial* skyMaterial;
+        SkyLight skyLight;
+        float skyBoxExposure;
         // Objects used for Postprocessing
         GLuint postprocessFrameBuffer, postProcessVertexArray;
         Texture2D *colorTarget, *depthTarget;
         TexturedMaterial* postprocessMaterial;
+        
+        // Setup function for render commands
+        void setupCommand(RenderCommand &c, std::vector<LightComponent *> &lights,
+                          glm::mat4 VP, glm::vec3 cameraPosition);
     public:
         // Initialize the renderer including the sky and the Postprocessing objects.
         // windowSize is the width & height of the window (in pixels).
@@ -48,8 +62,6 @@ namespace our
         void destroy();
         // This function should be called every frame to draw the given world
         void render(World* world);
-
-
     };
 
 }
