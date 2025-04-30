@@ -14,8 +14,8 @@
         "texture": "assets/textures/sky.jpg",
         "vs": "assets/shaders/sky.vert",
         "fs": "assets/shaders/sky.frag",
-        "top_color": [0.0, 0.0, 0.0],
-        "middle_color": [0.0, 0.0, 0.0],
+        "top_color": [0.25, 0.25, 0.5],
+        "middle_color": [0.1, 0.1, 0.2],
         "bottom_color": [0.0, 0.0, 0.0],
         "enabled": true
       }
